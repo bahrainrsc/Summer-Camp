@@ -73,9 +73,9 @@ body {
 .login-logo .sun { font-size: 2.75rem; display: block; margin-bottom: 0.25rem; }
 
 .login-logo h1 {
-  font-family: 'Abril Fatface', 'Nunito', serif;
+  font-family: 'Nunito', sans-serif;
   font-size: 1.6rem;
-  font-weight: 400;
+  font-weight: 800;
   color: var(--text-dark);
   letter-spacing: 0.5px;
 }
@@ -85,6 +85,7 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  font-weight: 900;
 }
 
 .login-logo p {
@@ -187,8 +188,8 @@ body {
 .sidebar-logo .logo-icon { font-size: 1.75rem; }
 
 .sidebar-logo h2 {
-  font-family: 'Abril Fatface', 'Nunito', serif;
-  font-weight: 400;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
   font-size: 1.1rem;
   letter-spacing: 0.5px;
   color: var(--sidebar-accent);
