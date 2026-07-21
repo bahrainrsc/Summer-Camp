@@ -3,7 +3,7 @@ const db = require('./database');
 
 // ─── Session Configuration ─────────────────────────────────────────────────────
 const SESSION_CONFIG = {
-  secret: 'summershine3-secret-key-2026-rsc-bahrain',
+  secret: 'funfinity-secret-key-2026-rsc-bahrain',
   resave: false,
   saveUninitialized: false,
   cookie: {

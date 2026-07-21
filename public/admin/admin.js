@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   Summer Shine 3.0 — Admin Dashboard JavaScript
+   Funfinity Summer Camp — Admin Dashboard JavaScript
    Handles: login/logout, session, registrations table, zone tabs,
             search/filter, stats, export, EDIT modal, DELETE confirm, toast
    ═══════════════════════════════════════════════════════════════════════════ */

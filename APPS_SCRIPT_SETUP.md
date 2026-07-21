@@ -1,4 +1,4 @@
-# 🔗 Connect Summer Shine 3.0 to Google Sheets
+# 🔗 Connect Funfinity Summer Camp to Google Sheets
 ## Using Google Apps Script — No Cloud Console Needed!
 
 This takes about **5 minutes**. You only need access to Google Sheets.
@@ -9,7 +9,7 @@ This takes about **5 minutes**. You only need access to Google Sheets.
 
 1. Go to [sheets.google.com](https://sheets.google.com)
 2. Click **"+ Blank"** to create a new sheet
-3. Name it **"Summer Shine 3.0 Registrations"**
+3. Name it **"Funfinity Summer Camp Registrations"**
 
 > The script will automatically create these tabs inside it:
 > - 📋 **All Registrations** — every student
@@ -37,7 +37,7 @@ A new tab opens with a code editor.
 4. **Copy everything** in that file
 5. **Paste it** into the Apps Script editor
 6. Click **Save** (💾 icon or Ctrl+S)
-7. Name the project `Summer Shine 3.0 Sync` when prompted
+7. Name the project `Funfinity Summer Camp Sync` when prompted
 
 ---
 
@@ -50,7 +50,7 @@ A new tab opens with a code editor.
 
    | Setting | Value |
    |---|---|
-   | Description | Summer Shine 3.0 Sync |
+   | Description | Funfinity Summer Camp Sync |
    | Execute as | **Me** |
    | Who has access | **Anyone** |
 

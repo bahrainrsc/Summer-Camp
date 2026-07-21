@@ -73,22 +73,37 @@ router.post('/register', (req, res) => {
       return res.status(422).json({ errors });
     }
 
-    // ── Zone lookup ─────────────────────────────────────────────────────────
+    // ── Zone lookup & ID generation ─────────────────────────────────────────
     const zone = ZONE_MAP[residing_area];
+
+    // Helper: generate next ID based on Zone range
+    // Manama: 201+, Riffa: 401+, Muharraq: 601+
+    const RANGES = {
+      'Manama':   { start: 201, max: 399 },
+      'Riffa':    { start: 401, max: 599 },
+      'Muharraq': { start: 601, max: 999 }
+    };
+    const range = RANGES[zone] || { start: 101, max: 199 };
+
+    const maxRow = db.prepare('SELECT MAX(id) as max_id FROM registrations WHERE id >= ? AND id <= ?').get(range.start, range.max);
+    const registrationId = (maxRow && maxRow.max_id && maxRow.max_id >= range.start)
+      ? maxRow.max_id + 1
+      : range.start;
 
     // ── Sanitize activities ─────────────────────────────────────────────────
     const activitiesArr = Array.isArray(activities)
       ? activities.filter(a => VALID_ACTIVITIES.includes(a))
       : [];
 
-    // ── Insert ──────────────────────────────────────────────────────────────
+    // ── Insert with explicit ID ─────────────────────────────────────────────
     const stmt = db.prepare(`
       INSERT INTO registrations
-        (student_name, guardian_name, contact_number, class, age, residing_area, zone, activities)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        (id, student_name, guardian_name, contact_number, class, age, residing_area, zone, activities)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
-    const info = stmt.run(
+    stmt.run(
+      registrationId,
       student_name.trim(),
       guardian_name.trim(),
       contact_number.trim(),
@@ -99,19 +114,19 @@ router.post('/register', (req, res) => {
       JSON.stringify(activitiesArr)
     );
 
-    // Fetch the saved record (includes auto-set submitted_at)
-    const saved = db.prepare('SELECT * FROM registrations WHERE id = ?').get(info.lastInsertRowid)
-               || { id: info.lastInsertRowid, student_name: student_name.trim(), guardian_name: guardian_name.trim(), contact_number: contact_number.trim(), class: studentClass, age: ageNum, residing_area, zone, activities: activitiesArr };
+    // Fetch the saved record
+    const saved = db.prepare('SELECT * FROM registrations WHERE id = ?').get(registrationId)
+               || { id: registrationId, student_name: student_name.trim(), guardian_name: guardian_name.trim(), contact_number: contact_number.trim(), class: studentClass, age: ageNum, residing_area, zone, activities: activitiesArr };
 
     // Non-blocking Google Sheets sync
     appendRegistration(
       { ...saved, activities: activitiesArr },
-      info.lastInsertRowid
-    ).catch(() => {}); // already logged inside sheets.js
+      registrationId
+    ).catch(() => {});
 
     return res.status(201).json({
       success: true,
-      id: info.lastInsertRowid,
+      id: registrationId,
       student_name: student_name.trim(),
       zone,
     });

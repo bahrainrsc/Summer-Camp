@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   Summer Shine 3.0 — Public App Logic
+   Funfinity Summer Camp — Public App Logic
    - Hero floating dots
    - Header scroll effect
    - Live name greeting
@@ -42,7 +42,7 @@ const greetingBox  = document.getElementById('name-greeting');
 const GREETING_MSGS = [
   (n) => `Awesome, ${n}! Just a few more details and you're in 🎉`,
   (n) => `Hey ${n}! You're going to have an amazing time 🌟`,
-  (n) => `Welcome, ${n}! Summer Shine 3.0 can't wait to meet you ☀️`,
+  (n) => `Welcome, ${n}! Funfinity Summer Camp can't wait to meet you ☀️`,
 ];
 let greetingIdx = 0;
 
@@ -250,12 +250,13 @@ form.addEventListener('submit', async (e) => {
         const successScreen = document.getElementById('success-screen');
         successScreen.style.display = 'block';
 
-        // Set student name
+        // Set student name & Registration ID
         document.getElementById('success-name').textContent = payload.student_name.split(' ')[0];
+        document.getElementById('success-id').textContent = '#' + (data.id || 'N/A');
 
         // WhatsApp share link
         const shareText = encodeURIComponent(
-          `🌟 I just registered for Summer Shine 3.0!\n\n📅 July 17, 2026\n📍 Umm Salal\n\nJoin me — register here: ${window.location.href}`
+          `🌟 I just registered for Funfinity Summer Camp! (Reg ID: #${data.id || ''})\n\n📅 July 17, 2026\n📍 Manama · Riffa · Muharraq\n\nJoin me — register here: ${window.location.href}`
         );
         document.getElementById('share-btn').href = `https://wa.me/?text=${shareText}`;
 

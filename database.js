@@ -7,9 +7,10 @@ const path      = require('path');
 const fs        = require('fs');
 const bcrypt    = require('bcrypt');
 const initSqlJs = require('sql.js');
+const { fetchAllFromSheets } = require('./sheets');
 
 const DATA_DIR  = path.join(__dirname, 'data');
-const DB_PATH   = path.join(DATA_DIR, 'summershine.db');
+const DB_PATH   = path.join(DATA_DIR, 'funfinity.db');
 const SALT_ROUNDS = 12;
 
 // Internal sql.js Database instance (populated after init)
@@ -104,7 +105,7 @@ function createSchema() {
 
 // ─── Admin Seeding ────────────────────────────────────────────────────────────
 const SEED_ADMINS = [
-  { username: 'supreme',   password: 'SummerShine2026!', role: 'supreme', zone: null       },
+  { username: 'supreme',   password: 'Funfinity2026!', role: 'supreme', zone: null       },
   { username: 'muharraq',  password: 'MuharraqZone26!',  role: 'area',    zone: 'Muharraq' },
   { username: 'manama',    password: 'ManamaZone26!',     role: 'area',    zone: 'Manama'   },
   { username: 'riffa',     password: 'RiffaZone26!',      role: 'area',    zone: 'Riffa'    },
@@ -141,6 +142,28 @@ db.ready = (async () => {
 
   createSchema();
   await seedAdmins();
+
+  // Restore past registrations from Google Sheets if SQLite is empty (e.g. after Render restart)
+  const countRow = sqlGet('SELECT COUNT(*) as count FROM registrations');
+  if (countRow && countRow.count === 0) {
+    const pastRegs = await fetchAllFromSheets();
+    if (pastRegs.length > 0) {
+      for (const r of pastRegs) {
+        sqlRun(`
+          INSERT INTO registrations
+          (id, student_name, guardian_name, contact_number, class, age, residing_area, zone, activities, submitted_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `, [
+          r.id, r.student_name, r.guardian_name, r.contact_number,
+          r.class, r.age, r.residing_area, r.zone,
+          JSON.stringify(r.activities || []),
+          r.submitted_at || new Date().toISOString()
+        ]);
+      }
+      console.log(`[DB] Restored ${pastRegs.length} past registrations from Google Sheets into SQLite database!`);
+    }
+  }
+
   console.log('[DB] Ready ✔');
 })();
 

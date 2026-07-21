@@ -1,7 +1,7 @@
 {
   "name": "summer-shine-3",
   "version": "1.0.0",
-  "description": "Summer Shine 3.0 Registration Website",
+  "description": "Funfinity Summer Camp Registration Website",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

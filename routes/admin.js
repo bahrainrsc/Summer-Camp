@@ -142,7 +142,7 @@ router.get('/export', requireAuth, (req, res) => {
     XLSX.utils.book_append_sheet(wb, ws, 'Registrations');
 
     const today = new Date().toISOString().slice(0, 10);
-    const filename = `SummerShine3.0_Registrations_${today}.xlsx`;
+    const filename = `FunfinitySummerCamp_Registrations_${today}.xlsx`;
 
     const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' });
 

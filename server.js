@@ -53,7 +53,7 @@ app.get('*', (req, res) => {
 db.ready
   .then(() => {
     app.listen(PORT, () => {
-      console.log(`\n🌞 Summer Shine 3.0 server running at http://localhost:${PORT}`);
+      console.log(`\n🌞 Funfinity Summer Camp server running at http://localhost:${PORT}`);
       console.log(`📋 Admin dashboard at http://localhost:${PORT}/admin\n`);
     });
   })

@@ -120,4 +120,23 @@ async function logDelete(reg) {
   }
 }
 
-module.exports = { appendRegistration, logEdit, logDelete };
+/**
+ * Fetches all past registrations from Google Sheets on server startup
+ * to restore the local database if it was reset.
+ */
+async function fetchAllFromSheets() {
+  if (!isReady()) return [];
+  try {
+    const response = await fetch(`${config.APPS_SCRIPT_URL}?action=getAll`, { redirect: 'follow' });
+    const data = await response.json();
+    if (data && data.ok && Array.isArray(data.registrations)) {
+      console.log(`[Sheets] ✔ Restored ${data.registrations.length} past registrations from Google Sheets!`);
+      return data.registrations;
+    }
+  } catch (err) {
+    console.error('[Sheets] Restoring past registrations failed (non-fatal):', err.message);
+  }
+  return [];
+}
+
+module.exports = { appendRegistration, logEdit, logDelete, fetchAllFromSheets };
