@@ -250,13 +250,15 @@ form.addEventListener('submit', async (e) => {
         const successScreen = document.getElementById('success-screen');
         successScreen.style.display = 'block';
 
-        // Set student name & Registration ID
+        // Set student name, Registration ID & specific location (e.g. MUHARRAQ)
+        const locationName = (data.zone || 'Bahrain').toUpperCase();
         document.getElementById('success-name').textContent = payload.student_name.split(' ')[0];
-        document.getElementById('success-id').textContent = '#' + (data.id || 'N/A');
+        document.getElementById('success-id').textContent   = '#' + (data.id || 'N/A');
+        document.getElementById('success-zone').textContent = locationName;
 
         // WhatsApp share link
         const shareText = encodeURIComponent(
-          `🌟 I just registered for Funfinity Summer Camp! (Reg ID: #${data.id || ''})\n\n📅 July 17, 2026\n📍 Manama · Riffa · Muharraq\n\nJoin me — register here: ${window.location.href}`
+          `🌟 I just registered for Funfinity Summer Camp! (Reg ID: #${data.id || ''})\n\n📅 July 17, 2026\n📍 ${locationName}\n\nJoin me — register here: ${window.location.href}`
         );
         document.getElementById('share-btn').href = `https://wa.me/?text=${shareText}`;
 
